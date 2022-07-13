@@ -22,7 +22,7 @@ function CreateUser() {
   const addUser = async (values) => {
     setSubmissionSuccess(false);
     setError(false)
-    const res = await axios
+     axios
       .post(`http://localhost:3333/users`, values)
       .then((res) => {
         console.log(res);
@@ -43,7 +43,7 @@ function CreateUser() {
       email: "",
       age: "",
       isPublic: "",
-      createdAt:"",
+      createdAt: new Date().toISOString(),
       avatarUrl: "",
     },
 

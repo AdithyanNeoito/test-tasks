@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styles from "./Users.module.css";
 import axios from "axios";
 import { FormControl, MenuItem, Select, Grid, ButtonBase } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
+
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -25,39 +25,43 @@ const Users = () => {
   const [searchText, setSearchText] = useState("");
 
   const [error, setError] = useState(false);
-  const [sortValue, setSortValue] = useState("None");
-  const [sortType, setSortType] = useState("None");
+  const [sortValue, setSortValue] = useState("createdAt");
+  const [sortType, setSortType] = useState("desc");
+  const[loading,setLoading]=useState(false);
 
   //fetching users reusable function
   const getUsers = async (Page, searchTextt, sortValuee, type) => {
     const baseUrl = `http://localhost:3333/users`;
     let url = baseUrl + `?_page=${currentPage}&_limit=10`;
     if (Page) {
-      url = baseUrl + `?_page=${currentPage}&_limit=10`;
+      url =
+        baseUrl +
+        `?_page=${currentPage}&_sort=${sortValue}&_order=desc&_limit=10`;
+    }
+
+    if (sortValuee || type) {
+      url =
+        baseUrl +
+        `?_page=${currentPage}&_sort=${sortValuee}&_order=${type}&_limit=10`;
     }
     if (searchTextt) {
-      url = baseUrl + `?name=${searchTextt}&_limit=10`;
-    }
-    if (sortValuee !== "None") {
       url =
         baseUrl +
-        `?_page=${currentPage}&_sort=${sortValue}&_order=asc&_limit=10`;
+        `?q=${searchTextt}&_sort=${sortValuee}&_order=${type}&_limit=10`;
     }
-    if (type !== "None") {
-      url =
-        baseUrl +
-        `?_page=${currentPage}&_sort=${sortValue}&_order=${type}&_limit=10`;
-    }
+
     console.log(url);
-    await axios
+    axios
       .get(url)
       .then((res) => {
         if (res.data.length !== 0) {
           setError(false);
+          
           let totalCount = Math.ceil(res.headers["x-total-count"] / 10);
           setCount(totalCount);
           console.log(res.data);
           setUsers(res.data);
+          setLoading(false)
         } else {
           setError(true);
           console.log("no Results found");
@@ -65,51 +69,43 @@ const Users = () => {
       })
       .catch((error) => {
         setError(true);
+        setLoading(false)
       });
   };
 
-  //first render 
+  //first render
   useEffect(() => {
-    const fetchUsers = () => {
-      getUsers(currentPage, searchText, sortValue, sortType);
-    };
-
-    fetchUsers();
+    setLoading(true);
+    getUsers(currentPage, searchText, sortValue, sortType);
   }, [currentPage]);
 
   //Search functionality
   const searchHandler = async (searchText) => {
-    setSortType("None");
-    setSortValue("None");
     if (searchText !== "") {
+      setLoading(true)
       getUsers(currentPage, searchText, sortValue, sortType);
     } else {
       setError(false);
+      setLoading(true)
       getUsers(currentPage, searchText, sortValue, sortType);
       console.log("No search text found");
     }
   };
 
-  //sorting value handler
-  const sortValueHandler = (item) => {
-    setSortValue(item);
-    setSortType("None");
-  };
-
   //sort functionality
-  const sortHandler = async (type) => {
+  const sortHandler = async (value, type) => {
     setError(false);
-   if (type !== "None" && sortValue !== "None") {
-      console.log(type);
-      setSortType(type);
+    if (value) {
+      setSortValue(value);
       console.log(sortType);
       console.log(currentPage);
-
+       setLoading(true)
       console.log(sortType);
-      getUsers(currentPage, searchText, sortValue, type);
+      getUsers(currentPage, searchText, value, sortType);
     } else {
-      setSortType("None");
-      setSortValue("None");
+      setSortType(type);
+      setLoading(true)
+      getUsers(currentPage, searchText, sortValue, type);
     }
   };
 
@@ -125,11 +121,6 @@ const Users = () => {
 
   return (
     <Container className={styles.container}>
-      {error && (
-        <div style={{ color: "red" }}>
-          <p>No Results Found</p>
-        </div>
-      )}
       <div className={styles.headers}>
         <div>
           <h2>Users</h2>
@@ -160,20 +151,14 @@ const Users = () => {
                 id="demo-simple-select"
                 value={sortValue}
               >
-                <MenuItem value={"age"} onClick={() => sortValueHandler("age")}>
+                <MenuItem value={"age"} onClick={() => sortHandler("age", "")}>
                   Age
                 </MenuItem>
                 <MenuItem
                   value={"createdAt"}
-                  onClick={() => sortValueHandler("createdAt")}
+                  onClick={() => sortHandler("createdAt", "")}
                 >
                   Created At
-                </MenuItem>
-                <MenuItem
-                  value={"None"}
-                  onClick={() => sortValueHandler("None")}
-                >
-                  None
                 </MenuItem>
               </Select>
             </FormControl>
@@ -186,14 +171,14 @@ const Users = () => {
                 id="demo-simple-select"
                 value={sortType}
               >
-                <MenuItem value={"asc"} onClick={() => sortHandler("asc")}>
+                <MenuItem value={"asc"} onClick={() => sortHandler("", "asc")}>
                   Asc
                 </MenuItem>
-                <MenuItem value={"desc"} onClick={() => sortHandler("desc")}>
+                <MenuItem
+                  value={"desc"}
+                  onClick={() => sortHandler("", "desc")}
+                >
                   Desc
-                </MenuItem>
-                <MenuItem value={"None"} onClick={() => sortHandler("None")}>
-                  None
                 </MenuItem>
               </Select>
             </FormControl>
@@ -201,59 +186,76 @@ const Users = () => {
         </div>
       </div>
 
-      <div style={{ padding: 15 }}>
-        <Grid container spacing={2}>
-          {users.map((user) => (
-            <Grid item xs={12} sm={6} md={3}>
-              <Card>
-                <ButtonBase onClick={() => openDetailsPage(user.id)}>
-                  <CardMedia
-                    component="img"
-                    height="165"
-                    image={user.avatarUrl}
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 14 }}
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {user.name}
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: 14 }}
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {user.age}
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: 14 }}
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {user.createdAt}
-                    </Typography>
-                    <Typography>{user.statusMessage}</Typography>
-                  </CardContent>
-                 </ButtonBase>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+      {error ? (
+        <div>
+          {" "}
+          <h3 style={{ color: "red" }}>Not results found </h3>
+        </div>
+      ) : (
+      
+        <div>
+          {loading ? <div><h2>Loading...</h2></div>:
+           
+          <div style={{ padding: 15 }}>
+            <Grid container spacing={2}>
+              {users.map((user, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card>
+                    <ButtonBase onClick={() => openDetailsPage(user.id)}>
+                      <CardMedia
+                        component="img"
+                        height="165"
+                        image={user.avatarUrl}
+                        alt="green iguana"
+                      />
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Stack spacing={2}>
-          <Pagination
-            count={count}
-            variant="outlined"
-            shape="rounded"
-            onChange={(e, value) => setCurrentPage(value)}
-          />
-        </Stack>
-      </div>
+                      <CardContent>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {user.name}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {user.age}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {user.createdAt}
+                        </Typography>
+                        <Typography>{user.statusMessage}</Typography>
+                      </CardContent>
+                    </ButtonBase>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </div>}
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Stack spacing={2}>
+              <Pagination
+                count={count}
+                variant="outlined"
+                shape="rounded"
+                onChange={(e, value) => setCurrentPage(value)}
+              />
+            </Stack>
+          </div>
+         
+        </div>
+         
+       
+      )}
+
       <div style={{ display: "flex", justifyContent: "flex-end", padding: 2 }}>
         <Button variant="contained" onClick={() => createUserClickHandler()}>
           Create User

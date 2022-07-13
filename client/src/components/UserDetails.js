@@ -13,11 +13,11 @@ import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
   const [fetched, setfetched] = useState(false);
-
+  const[loading,setLoading]=useState(false);
   const navigation = useNavigate();
 
   const getUser = async () => {
-    await axios
+     axios
       .get(`http://localhost:3333/users?id=${id}`)
       .then((res) => {
         console.log(res.data[0]);
@@ -35,6 +35,7 @@ const UserDetails = () => {
         formik.values.createdAt = res.data[0].createdAt;
 
         setfetched(!fetched);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -51,6 +52,7 @@ const UserDetails = () => {
   let { id } = useParams();
   useEffect(() => {
     const fetchUser = async () => {
+      setLoading(true);
       getUser(id);
     };
     fetchUser();
@@ -84,6 +86,7 @@ const UserDetails = () => {
         <h1>userDetails</h1>
       </div>
 
+{loading ?<div><h2>loading....</h2></div> :
       <div style={{ display: "flex", justifyContent: "center" }}>
         <form onSubmit={formik.handleSubmit}>
           <Paper>
@@ -222,7 +225,7 @@ const UserDetails = () => {
         </form>
 
         {/*  </Formik> */}
-      </div>
+      </div>}
     </Container>
   );
 };
