@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState,useMemo } from "react";
 import styles from "./Users.module.css";
 import axios from "axios";
 import { FormControl, MenuItem, Select, Grid, ButtonBase } from "@mui/material";
@@ -13,6 +13,7 @@ import CardMedia from "@mui/material/CardMedia";
 
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/material";
+import _ from 'lodash';
 
 const Users = () => {
   const navigation = useNavigate();
@@ -28,6 +29,23 @@ const Users = () => {
   const [sortValue, setSortValue] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
   const[loading,setLoading]=useState(false);
+
+
+
+  console.log("Test");
+
+  //search text handling
+  const handleChange=(value)=>{
+  setSearchText(value)
+  }
+
+  //debounce function
+  const debounceResults = _.debounce (function(value){
+    handleChange(value)}, 1000);
+  
+
+
+    
 
   //fetching users reusable function
   const getUsers = async (Page, searchTextt, sortValuee, type) => {
@@ -128,7 +146,7 @@ const Users = () => {
         <div>
           <input
             style={{ height: 30 }}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => debounceResults(e.target.value)}
             className="search-input"
             type="text"
             placeholder="search By Name..."
