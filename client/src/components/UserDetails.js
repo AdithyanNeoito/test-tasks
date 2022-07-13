@@ -203,7 +203,7 @@ const UserDetails = () => {
                 name="createdAt"
                 label="Created At"
                 variant="outlined"
-                Half
+                
                 required
                 value={formik.values.createdAt}
                 onChange={formik.handleChange}
