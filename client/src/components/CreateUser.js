@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, TextField, Paper, Button } from "@mui/material";
+import { Container, TextField, Paper, Button, Alert } from "@mui/material";
 /* import { Formik, Form } from "formik"; */
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { useFormik } from "formik";
@@ -13,27 +13,25 @@ import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
-
   const navigation = useNavigate();
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
-  const [error,setError]=useState(false)
+  const [error, setError] = useState(false);
 
   //adding user
   const addUser = async (values) => {
     setSubmissionSuccess(false);
-    setError(false)
-     axios
+    setError(false);
+    axios
       .post(`http://localhost:3333/users`, values)
       .then((res) => {
         console.log(res);
         setSubmissionSuccess(true);
-        navigation('/')
       })
-      .catch((error)=>{
-        setError(true)
-        setSubmissionSuccess(false)
+      .catch((error) => {
+        setError(true);
+        setSubmissionSuccess(false);
         console.log(error);
-      })
+      });
   };
 
   const formik = useFormik({
@@ -49,10 +47,15 @@ function CreateUser() {
 
     onSubmit: (values) => {
       console.log(values);
-      alert(JSON.stringify(values, null, 2));
       addUser(values);
     },
   });
+
+  // Success alert close handler
+  const closeHandler = () => {
+    setSubmissionSuccess(false);
+    navigation("/");
+  };
   return (
     <Container
       style={{
@@ -62,10 +65,22 @@ function CreateUser() {
         alignItems: "center",
       }}
     >
-     { error &&
-     <div>
-      <p>Something went wrong</p>
-      </div>}
+      {error && (
+        <div>
+          <Alert severity="error" onClose={() => setError(false)}>
+            Something went wrong
+          </Alert>
+        </div>
+      )}
+      <div>
+        {submissionSuccess && (
+          <div style={{ marginTop: 10 }}>
+            <Alert severity="success" onClose={() => closeHandler()}>
+              Successfully Added
+            </Alert>
+          </div>
+        )}
+      </div>
       <div
         style={{
           display: "flex",
@@ -191,7 +206,6 @@ function CreateUser() {
                 </FormControl>
               </div>
             </div>
-           
           </Paper>
           <div
             style={{
