@@ -23,6 +23,7 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(false);
   const [edited, setEdited] = useState(false);
   const [error, setError] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const navigation = useNavigate();
 
   const getUser = async () => {
@@ -94,9 +95,28 @@ const UserDetails = () => {
   });
 
   // Success Alert closing Handler
-  const closeHandler = () => {
-    setEdited(false);
-    navigation("/");
+  const closeHandler = (value) => {
+    if (value == "edit") {
+      setEdited(false);
+      navigation("/");
+    } else {
+      setDeleted(false);
+      navigation("/");
+    }
+  };
+
+  //delete handler
+  const deleteHandler = () => {
+    axios
+      .delete(`http://localhost:3333/users/${id}`)
+      .then((res) => {
+        console.log(res);
+        setDeleted(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(true);
+      });
   };
   return (
     <Container
@@ -108,8 +128,16 @@ const UserDetails = () => {
     >
       {edited && (
         <div style={{ marginTop: 10 }}>
-          <Alert severity="success" onClose={() => closeHandler()}>
+          <Alert severity="success" onClose={() => closeHandler("edit")}>
             Successfully edited
+          </Alert>
+        </div>
+      )}
+
+      {deleted && (
+        <div style={{ marginTop: 10 }}>
+          <Alert severity="success" onClose={() => closeHandler("delete")}>
+            Successfully deleted
           </Alert>
         </div>
       )}
@@ -262,9 +290,23 @@ const UserDetails = () => {
                 marginTop: 25,
               }}
             >
-              <Button type="submit" variant="contained">
-                Save
-              </Button>
+              <div style={{ margin: 5 }}>
+                <Button type="submit" variant="contained">
+                  Save
+                </Button>
+              </div>
+
+              <div style={{ margin: 5 }}>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    deleteHandler();
+                  }}
+                >
+                  Delete
+                </Button>
+              </div>
             </div>
           </form>
 

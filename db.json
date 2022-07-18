@@ -23,16 +23,6 @@
       "statusMessage": "working from home"
     },
     {
-      "name": "odio a",
-      "statusMessage": "working from home",
-      "email": "#yppkecn@yydwk.mw",
-      "age": 22,
-      "isPublic": true,
-      "createdAt": "2017-08-17T09:53:24Z",
-      "avatarurl": "https://i.pravatar.cc/150?u=10010",
-      "id": 3
-    },
-    {
       "name": "animi",
       "statusMessage": "developer",
       "email": "#gtcgmjhb@svfnf.qw",
@@ -145,16 +135,14 @@
       "statusMessage": "working from home"
     },
     {
-      "age": 96,
-      "avatarUrl": "https://i.pravatar.cc/150?u=25829",
-      "bio": "Quas sed reprehenderit aliquid ab exercitationem, recusandae perspiciatis laborum aut quisquam. Magni debitis in reprehenderit aliquid, iusto expedita sint accusamus, id consectetur in consequatur a.",
-      "color": "#3E4059",
-      "createdAt": "2018-12-14T04:19:35Z",
-      "email": "#zlunewc@sikkz.dg",
-      "id": 14,
-      "isPublic": true,
       "name": "neque",
-      "statusMessage": "working from home"
+      "statusMessage": "working from home",
+      "email": "#zlunewc@sikkz.dg",
+      "age": 100,
+      "isPublic": true,
+      "createdAt": "2018-12-14T04:19:35Z",
+      "avatarUrl": "https://i.pravatar.cc/150?u=25829",
+      "id": 14
     },
     {
       "age": 93,
@@ -1185,43 +1173,6 @@
       "statusMessage": "working from home"
     },
     {
-      "name": "adi",
-      "statusMessage": "bdfbhfb",
-      "email": "rono@gmail.com",
-      "age": 23,
-      "isPublic": "false",
-      "avatarurl": "\"https://i.pravatar.cc/150?u=01140",
-      "id": 101
-    },
-    {
-      "id": 102
-    },
-    {
-      "id": 103
-    },
-    {
-      "id": 104
-    },
-    {
-      "name": "tester",
-      "statusMessage": "hai hello",
-      "email": "tester@gmail.com",
-      "age": 90,
-      "isPublic": "true",
-      "createdAt": "",
-      "avatarurl": "https://i.pravatar.cc/150?u=99679",
-      "id": 105
-    },
-    {
-      "name": "new",
-      "statusMessage": "ddeudud",
-      "email": "h@gmail.com",
-      "age": 2,
-      "isPublic": "true",
-      "avatarurl": "https://i.pravatar.cc/150?u=90858",
-      "id": 106
-    },
-    {
       "name": "saveee",
       "statusMessage": "cbjcbbe",
       "email": "s@gmail.com",
@@ -1231,17 +1182,7 @@
       "id": 107
     },
     {
-      "name": "newuser",
-      "statusMessage": "fbbbvrjv",
-      "email": "s@gmail.com",
-      "age": 3,
-      "isPublic": "true",
-      "createdAt": "",
-      "avatarUrl": "https://i.pravatar.cc/150?u=10010",
-      "id": 108
-    },
-    {
-      "name": "adithyan",
+      "name": "adithyankp",
       "statusMessage": "nfejfnejf",
       "email": "adi@gmail.com",
       "age": 22,
@@ -1249,16 +1190,6 @@
       "createdAt": "2022-07-13T04:06:26.250Z",
       "avatarUrl": "https://i.pravatar.cc/150?u=49358",
       "id": 109
-    },
-    {
-      "name": "ronaldo7",
-      "statusMessage": "hheudheudh",
-      "email": "i@gmail.com",
-      "age": 90,
-      "isPublic": "true",
-      "createdAt": "2022-07-15T03:53:04.321Z",
-      "avatarUrl": "https://i.pravatar.cc/150?u=49358",
-      "id": 110
     },
     {
       "name": "messi",
@@ -1279,6 +1210,26 @@
       "createdAt": "2022-07-15T03:55:08.610Z",
       "avatarUrl": "https://i.pravatar.cc/150?u=10010",
       "id": 112
+    },
+    {
+      "name": "testuser",
+      "statusMessage": "feffe",
+      "email": "test@gmail.com",
+      "age": 78,
+      "isPublic": "true",
+      "createdAt": "2022-07-18T04:29:28.740Z",
+      "avatarUrl": "https://i.pravatar.cc/150?u=49358",
+      "id": 113
+    },
+    {
+      "name": "ronaldo",
+      "statusMessage": "feufeu",
+      "email": "ronaldo@gmail.com",
+      "age": 23,
+      "isPublic": "true",
+      "createdAt": "2022-07-18T04:39:26.857Z",
+      "avatarUrl": "https://i.pravatar.cc/150?u=06386",
+      "id": 114
     }
   ]
 }
