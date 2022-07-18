@@ -80,27 +80,38 @@ const Users = () => {
   //fetching users reusable function
   const getUsers = async (Page, searchTextt, sortValuee, type) => {
     const baseUrl = `http://localhost:3333/users`;
-    let url = baseUrl + `?_page=${currentPage}&_limit=10`;
+    let url = baseUrl;
+    let UrlParams = { params: { _page: currentPage, _limit: 10 } };
     if (Page) {
-      url =
-        baseUrl +
-        `?_page=${currentPage}&_sort=${sortValue}&_order=desc&_limit=10`;
+      UrlParams = {
+        params: {
+          _page: currentPage,
+          _sort: sortValue,
+          _order: "desc",
+          _limit: 10,
+        },
+      };
     }
 
     if (sortValuee || type) {
-      url =
-        baseUrl +
-        `?_page=${currentPage}&_sort=${sortValuee}&_order=${type}&_limit=10`;
+      UrlParams = {
+        params: {
+          _page: currentPage,
+          _sort: sortValuee,
+          _order: type,
+          _limit: 10,
+        },
+      };
     }
     if (searchTextt) {
-      url =
-        baseUrl +
-        `?q=${searchTextt}&_sort=${sortValuee}&_order=${type}&_limit=10`;
+      UrlParams = {
+        params: { q: searchTextt, _sort: sortValuee, _order: type, _limit: 10 },
+      };
     }
 
     console.log(url);
     axios
-      .get(url)
+      .get(url, UrlParams)
       .then((res) => {
         if (res.data.length !== 0) {
           setError(false);

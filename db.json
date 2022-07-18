@@ -193,16 +193,14 @@
       "statusMessage": "working from home"
     },
     {
-      "age": 28,
-      "avatarUrl": "https://i.pravatar.cc/150?u=08313",
-      "bio": "Natus asperiores molestias reiciendis dolorum nam, a reprehenderit obcaecati. Similique nostrum, pariatur eligendi a autem tenetur architecto, ipsa hic a aut soluta veniam.",
-      "color": "#0\u0000EC08",
-      "createdAt": "2012-08-12T07:14:36Z",
-      "email": "#whzhaa@uggeh.ud",
-      "id": 19,
-      "isPublic": false,
       "name": "non amet",
-      "statusMessage": "working from home"
+      "statusMessage": "working from home",
+      "email": "#whzhaa@uggeh.ud",
+      "age": 30,
+      "isPublic": false,
+      "createdAt": "2012-08-12T07:14:36Z",
+      "avatarUrl": "https://i.pravatar.cc/150?u=08313",
+      "id": 19
     },
     {
       "age": 56,
