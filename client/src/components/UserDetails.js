@@ -1,11 +1,4 @@
-import {
-  Container,
-  Typography,
-  Paper,
-  TextField,
-  Button,
-  Alert,
-} from "@mui/material";
+import { Container, Paper, TextField, Button, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -26,10 +19,12 @@ const UserDetails = () => {
   const [deleted, setDeleted] = useState(false);
   const navigation = useNavigate();
 
+  let { id } = useParams();
+
   const getUser = async () => {
     setError(false);
     axios
-      .get(`http://localhost:3333/users?id=${id}`)
+      .get(`http://localhost:3333/users?`, { params: { id: id } })
       .then((res) => {
         console.log(res.data[0]);
 
@@ -54,6 +49,7 @@ const UserDetails = () => {
       });
   };
 
+  //edit and save user
   const editSaveUser = (values) => {
     setError(false);
     setEdited(false);
@@ -68,7 +64,6 @@ const UserDetails = () => {
       });
   };
 
-  let { id } = useParams();
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
@@ -94,7 +89,7 @@ const UserDetails = () => {
     },
   });
 
-  // Success Alert closing Handler
+  // Success and delete Alert closing Handler
   const closeHandler = (value) => {
     if (value == "edit") {
       setEdited(false);
